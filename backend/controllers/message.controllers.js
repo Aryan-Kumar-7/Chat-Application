@@ -24,7 +24,7 @@ export const sendMessage = async (req, res) => {
         });
 
         if(newMessage) {
-            conversation.message.push(newMessage._id);
+            conversation.messages.push(newMessage._id);
         }
 
         // SOKET TO functionality will go here
@@ -51,13 +51,13 @@ export const getMessage = async (req, res) => {
 
         const conversation = await Conversation.findOne({
             participants: { $all: [senderId, userToChatId]},
-        }).populate("message"); // NOT REFERENCE BUT ACTUAL MESSAGES
+        }).populate("messages"); // NOT REFERENCE BUT ACTUAL MESSAGES
 
         if(!conversation) return res.status(200).json([]);
 
-        const message = conversation.message;
+        const messages = conversation.messages;
 
-        res.status(200).json(conversation.message);
+        res.status(200).json(messages);
 
     } catch (error) {
         console.log("Error in getMessage controller: ", error.message);
